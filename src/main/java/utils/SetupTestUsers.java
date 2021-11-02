@@ -21,8 +21,8 @@ public class SetupTestUsers {
     // Whatever you do DO NOT COMMIT and PUSH with the real passwords
 
     User user = new User("user", "Kodener123");
-    User admin = new User("admin", "Kodener123");
-    User both = new User("user_admin", "Kodener123");
+    User admin = new User("admin", "ditlevlugterafost");
+    User both = new User("user_admin", "gedensigermææh");
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");
@@ -40,10 +40,10 @@ public class SetupTestUsers {
     em.persist(admin);
     em.persist(both);
     em.getTransaction().commit();
-    System.out.println("PW: " + user.getUserPass());
-    System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
-    System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
-    System.out.println("Created TEST Users");
+    //System.out.println("PW: " + user.getUserPass());
+    //System.out.println("Testing user with OK password: " + user.verifyPassword("Kodener123",user.getUserPass()));
+    //System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
+    //System.out.println("Created TEST Users"); 
    
   }
 

@@ -34,7 +34,7 @@ public class UserFacade {
         User user;
         try {
             user = em.find(User.class, username);
-            if (user == null || !user.verifyPassword(password)) {
+            if (user == null || !user.verifyPassword(password, user.getUserPass())) {
                 throw new AuthenticationException("Invalid user name or password");
             }
         } finally {

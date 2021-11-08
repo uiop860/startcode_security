@@ -1,8 +1,12 @@
 package rest;
 
+import DTO.DemoDTO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.GsonBuildConfig;
 import entities.User;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,6 +18,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+
+import facades.FacadeExample;
 import utils.EMF_Creator;
 
 /**
@@ -25,6 +31,7 @@ public class DemoResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     @Context
     private UriInfo context;
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Context
     SecurityContext securityContext;
@@ -67,5 +74,17 @@ public class DemoResource {
     public String getFromAdmin() {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
+    }
+
+    @GET
+    @Produces
+    @Path("fiveServers")
+    public String getDataFromFiveServers() throws ExecutionException, InterruptedException {
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
+        FacadeExample fc = FacadeExample.getFacadeExample(emf);
+
+        List<DemoDTO> responses = fc.getDataFromFiveServers();
+
+        return gson.toJson(responses);
     }
 }

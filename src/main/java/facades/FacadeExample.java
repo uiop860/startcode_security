@@ -1,7 +1,15 @@
 package facades;
 
+import DTO.DemoDTO;
+import callables.Parallel;
 import entities.RenameMe;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -45,7 +53,31 @@ public class FacadeExample {
         }finally{  
             em.close();
         }
-        
+    }
+
+    public List<DemoDTO> getDataFromFiveServers() throws ExecutionException, InterruptedException {
+
+        String[] hosts = {
+                "https://api.chucknorris.io/jokes/random"
+        };
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+        List<Future<DemoDTO>> futures = new ArrayList<>();
+        List<DemoDTO> responses = new ArrayList<>();
+
+        for (String s: hosts) {
+            Future future = executor.submit(new Parallel(s));
+            futures.add(future);
+        }
+
+        //Get the results
+        for (Future<DemoDTO> future : futures) {
+            DemoDTO dto = future.get();
+            responses.add(dto);
+
+        }
+
+        return responses;
     }
 
 }

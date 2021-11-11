@@ -20,6 +20,7 @@ public class Parallel implements Callable<DemoDTO> {
     public DemoDTO call() throws Exception {
         DemoDTO response = null;
 
+
         if(isCalled){
             return null;
         }

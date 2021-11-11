@@ -58,12 +58,13 @@ public class FacadeExample {
     public List<DemoDTO> getDataFromFiveServers() throws ExecutionException, InterruptedException {
 
         String[] hosts = {
-                "https://api.chucknorris.io/jokes/random"
+                "https://api.chucknorris.io/jokes/random",
+                "https://jsonplaceholder.typicode.com/users",
         };
 
         ExecutorService executor = Executors.newCachedThreadPool();
         List<Future<DemoDTO>> futures = new ArrayList<>();
-        List<DemoDTO> responses = new ArrayList<>();
+        List<Object> responses = new ArrayList<>();
 
         for (String s: hosts) {
             Future future = executor.submit(new Parallel(s));
@@ -74,6 +75,22 @@ public class FacadeExample {
         for (Future<DemoDTO> future : futures) {
             DemoDTO dto = future.get();
             responses.add(dto);
+        }
+
+        for (int i = 0; i < futures.size(); i++) {
+            switch (i){
+                case 1:
+                    DemoDTO dto = futures.get(i);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
 
         }
 

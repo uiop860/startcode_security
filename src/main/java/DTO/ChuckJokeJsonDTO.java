@@ -1,11 +1,11 @@
 package DTO;
 
-public class DemoDTO {
+public class ChuckJokeJsonDTO {
 
     private String value;
     private String url;
 
-    public DemoDTO(String value, String url) {
+    public ChuckJokeJsonDTO(String value, String url) {
         this.value = value;
         this.url = url;
     }

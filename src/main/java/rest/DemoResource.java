@@ -1,9 +1,7 @@
 package rest;
 
-import DTO.DemoDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.GsonBuildConfig;
 import entities.User;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -83,7 +81,7 @@ public class DemoResource {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fc = FacadeExample.getFacadeExample(emf);
 
-        List<DemoDTO> responses = fc.getDataFromFiveServers();
+        List<Object> responses = fc.getDataFromFiveServers();
 
         return gson.toJson(responses);
     }

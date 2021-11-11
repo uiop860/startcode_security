@@ -1,8 +1,9 @@
 package facades;
 
-import DTO.DemoDTO;
+import DTO.ChuckJokeJsonDTO;
+import DTO.UserJsonDTO;
 import callables.Parallel;
-import entities.RenameMe;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -22,6 +22,7 @@ public class FacadeExample {
 
     private static FacadeExample instance;
     private static EntityManagerFactory emf;
+    private Gson gson = new Gson();
     
     //Private Constructor to ensure Singleton
     private FacadeExample() {}
@@ -55,15 +56,17 @@ public class FacadeExample {
         }
     }
 
-    public List<DemoDTO> getDataFromFiveServers() throws ExecutionException, InterruptedException {
+    public List<Object> getDataFromFiveServers() throws ExecutionException, InterruptedException {
 
         String[] hosts = {
-                "https://api.chucknorris.io/jokes/random"
+                "https://api.chucknorris.io/jokes/random",
+                "https://jsonplaceholder.typicode.com/users",
         };
 
         ExecutorService executor = Executors.newCachedThreadPool();
-        List<Future<DemoDTO>> futures = new ArrayList<>();
-        List<DemoDTO> responses = new ArrayList<>();
+        List<Future<String>> futures = new ArrayList<>();
+        List<String> data = new ArrayList<>();
+        List<Object> response = new ArrayList<>();
 
         for (String s: hosts) {
             Future future = executor.submit(new Parallel(s));
@@ -71,13 +74,33 @@ public class FacadeExample {
         }
 
         //Get the results
-        for (Future<DemoDTO> future : futures) {
-            DemoDTO dto = future.get();
-            responses.add(dto);
+        for (Future<String> future : futures) {
+            String dto = future.get();
+            data.add(dto);
+        }
+
+        for (int i = 0; i < data.size(); i++) {
+            switch (i){
+                case 1:
+                    ChuckJokeJsonDTO chuckDto = gson.fromJson(data.get(i), ChuckJokeJsonDTO.class);
+                    response.add(chuckDto);
+                    break;
+                case 2:
+                    System.out.println(data.get(i));
+//                    List<UserJsonDTO> userDto = gson.fromJson(data.get(i), UserJsonDTO.class);
+//                    response.add(userDto);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
 
         }
 
-        return responses;
+        return response;
     }
 
 }

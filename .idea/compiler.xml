@@ -13,8 +13,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="security-start" options="-endorseddirs C:\Users\olive\Documents\Github\startcode_security\target/endorsed" />
-      <module name="startcode_security_backend" options="-endorseddirs C:\Users\olive\Documents\Github\startcode_security_backend\target/endorsed" />
+      <module name="security-start" options="-endorseddirs C:\Users\olive\Documents\GitHub\startcode_security\target/endorsed" />
+      <module name="startcode_security_backend" options="-endorseddirs C:\Users\olive\Documents\GitHub\startcode_security_backend\target/endorsed" />
     </option>
   </component>
 </project>

@@ -1,8 +1,11 @@
 package rest;
 
+import DTO.ChuckJokeJsonDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.User;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.annotation.security.RolesAllowed;
@@ -30,6 +33,7 @@ public class DemoResource {
     @Context
     private UriInfo context;
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//    private Gson gson = new Gson();
 
     @Context
     SecurityContext securityContext;
@@ -81,7 +85,7 @@ public class DemoResource {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fc = FacadeExample.getFacadeExample(emf);
 
-        List<Object> responses = fc.getDataFromFiveServers();
+        List<List<Object>> responses = fc.getDataFromFiveServers();
 
         return gson.toJson(responses);
     }

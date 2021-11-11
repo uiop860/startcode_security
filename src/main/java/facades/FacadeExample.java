@@ -1,10 +1,11 @@
 package facades;
 
-import DTO.ChuckJokeJsonDTO;
-import DTO.UserJsonDTO;
+import DTO.*;
 import callables.Parallel;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -56,17 +57,20 @@ public class FacadeExample {
         }
     }
 
-    public List<Object> getDataFromFiveServers() throws ExecutionException, InterruptedException {
+    public List<List<Object>> getDataFromFiveServers() throws ExecutionException, InterruptedException {
 
         String[] hosts = {
                 "https://api.chucknorris.io/jokes/random",
-                "https://jsonplaceholder.typicode.com/users",
+                "https://www.boredapi.com/api/activity",
+                "http://universities.hipolabs.com/search?country=Denmark",
+                "https://api.nasa.gov/planetary/apod?api_key=EqvAdUyaT8zI6j8ga19Rff2VR70NfnhLsjBHdlXc",
+                "https://catfact.ninja/fact"
         };
 
         ExecutorService executor = Executors.newCachedThreadPool();
         List<Future<String>> futures = new ArrayList<>();
         List<String> data = new ArrayList<>();
-        List<Object> response = new ArrayList<>();
+        List<List<Object>> response = new ArrayList<>();
 
         for (String s: hosts) {
             Future future = executor.submit(new Parallel(s));
@@ -79,28 +83,27 @@ public class FacadeExample {
             data.add(dto);
         }
 
-        for (int i = 0; i < data.size(); i++) {
-            switch (i){
-                case 1:
-                    ChuckJokeJsonDTO chuckDto = gson.fromJson(data.get(i), ChuckJokeJsonDTO.class);
-                    response.add(chuckDto);
-                    break;
-                case 2:
-                    System.out.println(data.get(i));
-//                    List<UserJsonDTO> userDto = gson.fromJson(data.get(i), UserJsonDTO.class);
-//                    response.add(userDto);
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-            }
+        List<Object> chuckJokes = new ArrayList<>();
+        chuckJokes.add(gson.fromJson(data.get(0),ChuckJokeJsonDTO.class));
+        response.add(chuckJokes);
 
-        }
+        List<Object> bored = new ArrayList<>();
+        bored.add(gson.fromJson(data.get(1), BoredJsonDTO.class));
+        response.add(bored);
+
+        // how to receive a list of object through a DTO object
+        Type listType = new TypeToken<ArrayList<UniversityJsonDTO>>(){}.getType();
+        List<Object> uni = gson.fromJson(data.get(2), listType);
+        response.add(uni);
+
+        List<Object> nasa = new ArrayList<>();
+        nasa.add(gson.fromJson(data.get(3), NasaJsonDTO.class));
+        response.add(nasa);
+
+        List<Object> catFact = new ArrayList<>();
+        catFact.add(gson.fromJson(data.get(4), CatFactJsonDTO.class));
+        response.add(catFact);
 
         return response;
     }
-
 }

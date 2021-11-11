@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 public class RedditFacade {
 
@@ -39,7 +40,6 @@ public class RedditFacade {
 
     public String getDataFromUrl(String url) throws IOException {
         String response = null;
-        System.out.println(url);
         URLConnection connection = new URL(url).openConnection();
         connection.setRequestProperty("Accept","application/json");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
@@ -49,22 +49,17 @@ public class RedditFacade {
         String i;
         while ((i = br.readLine()) != null)
         {
-            System.out.println(i);
             response = i;
         }
 
         return response;
     }
 
-    public MainJsonDTO getDataFromPopular() throws IOException {
+    public Object[] getDataFromPopular() throws IOException {
 
         RedditJsonDTO dto = gson.fromJson(getDataFromUrl("https://www.reddit.com/r/popular/.json"), RedditJsonDTO.class);
 
-
-        MainJsonDTO data = new MainJsonDTO(dto.getData().getChildren());
-
-
-        return data;
+        return dto.getData().getChildren();
     }
 
 }

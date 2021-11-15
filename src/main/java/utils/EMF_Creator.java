@@ -34,6 +34,7 @@ public class EMF_Creator {
 
     private static EntityManagerFactory createEntityManagerFactory(boolean isTest) {
 
+
         boolean isDeployed = (System.getenv("DEPLOYED") != null);
         if (isDeployed) {
             /* Strategy for deployment */
@@ -84,8 +85,7 @@ public class EMF_Creator {
 
     private static String getDbName() {
         Properties pomProperties;
-//        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("properties-from-pom.properties");
-        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("../../../properties-from-pom.properties");
+        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("properties-from-pom.properties");
         pomProperties = new Properties();
         try {
             pomProperties.load(is);

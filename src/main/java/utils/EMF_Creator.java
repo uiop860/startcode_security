@@ -84,7 +84,8 @@ public class EMF_Creator {
 
     private static String getDbName() {
         Properties pomProperties;
-        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("properties-from-pom.properties");
+//        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("properties-from-pom.properties");
+        InputStream is = EMF_Creator.class.getClassLoader().getResourceAsStream("../../../properties-from-pom.properties");
         pomProperties = new Properties();
         try {
             pomProperties.load(is);

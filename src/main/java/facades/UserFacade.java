@@ -43,6 +43,18 @@ public class UserFacade {
         return user;
     }
 
+    public void createUser(String username, String password){
+
+        EntityManager em = emf.createEntityManager();
+        User user = new User(username,password);
+        try {
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
 
 
 
